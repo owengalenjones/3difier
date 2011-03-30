@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<script src="jquery-1.5.1.js"></script>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+			   $("canvas").mousemove(function(e){
+					var mouseX = e.pageX - this.offsetLeft - 300;
+					var mouseY = e.pageY - this.offsetTop - 100;
+			      	//$('#status').html(mouseX +', '+ mouseY); // debugging
+					move(mouseX, mouseY);
+			   }); 
+			})
+		
+			var rect = '';
+			
+			function box(W, H, D) {
+				this.width = W;
+				this.height = H;
+				this.depth = D;
+			}
+		
+			function init() {
+				move(0,0);
+				//save();
+				//setInterval(draw, 100);  controls animation
+				//setInterval(move, 100);
+			}
+			
+			function move(x,y) {
+				var canvas = document.getElementById('tutorial');
+				var ctx = canvas.getContext('2d');
+				
+				var oppX = -x / 10;
+				var oppY = -y / 10;
+				
+				var closeX = -x / 5;
+				var closeY = -y / 5;
+				
+				ctx.clearRect(0,0,600,200);
+				//restore();
+				ctx.fillStyle = "rgb(200,0,0)";
+				ctx.fillRect (100 + oppX, 100 + oppY, 55, 50);
+				
+				//ctx.translate(oppX,oppY);
+				$('#status').html(oppX +', '+ oppY);
+				
+				ctx.fillStyle = "rgb(0,200,0)";
+				ctx.fillRect(300 + closeX, 100 + closeY, 100, 100);
+				
+			}
+		</script>
+	</head>
+	<body onload="init();">
+		<canvas id="tutorial" width="600" height="200" style="border: 3px solid black;">Image</canvas>
+		<h2 id="status">
+			0, 0
+		</h2>
+	</body>
+</html>
+		
