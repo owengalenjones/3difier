@@ -21,9 +21,6 @@
 		
 			function init() {
 				move(0,0);
-				//save();
-				//setInterval(draw, 100);  controls animation
-				//setInterval(move, 100);
 			}
 			
 			function move(x,y) {
@@ -37,11 +34,9 @@
 				var closeY = -y / 5;
 				
 				ctx.clearRect(0,0,600,200);
-				//restore();
 				ctx.fillStyle = "rgb(200,0,0)";
 				ctx.fillRect (100 + oppX, 100 + oppY, 55, 50);
-				
-				//ctx.translate(oppX,oppY);
+
 				$('#status').html(oppX +', '+ oppY);
 				
 				ctx.fillStyle = "rgb(0,200,0)";
