@@ -11,9 +11,29 @@
 			   }); 
 			})
 			
+			function display_object(x, y, depth, color) {
+				//this.name = name;
+				this.x = x;
+				this.y = y;
+				this.depth = depth;
+				this.color = color;
+				
+				this.getX = function() {
+					return this.x;
+				}
+				
+				this.getY = function() {
+					return this.y;
+				}
+				
+				this.getDepth = function() {
+					return this.depth;
+				}
+			}
+			
 			close_box = new Object();
 			close_box.x = 50;
-			close_box.y = 100;
+			close_box.y = 130;
 			close_box.depth = 10;
 			
 			front_box = new Object();
@@ -23,14 +43,19 @@
 			
 			far_box = new Object();
 			far_box.x = 200;
-			far_box.y = 100;
-			far_box.depth = 5;
+			far_box.y = 50;
+			far_box.depth = 100;
 			
-			var display_objects = (close_box, front_box, far_box);
+			var box = new display_object(10,20,30,40);
+			
+			$('#status').html(box.getX);
+			
+			var display_objects = [ new display_object(10,20,30,40) ];
 			
 		
 			function init() {
 				move(0,0);
+				$('#status').html(display_objects[0].getX);
 			}
 			
 			function move(x,y) {
@@ -40,17 +65,27 @@
 				var oppX = -x;
 				var oppY = -y;
 				
-				var closeX = -x / 5;
-				var closeY = -y / 5;
-				
 				ctx.clearRect(0,0,600,200);
 				ctx.fillStyle = "rgb(200,0,0)";
 				ctx.fillRect (close_box.x + (oppX / close_box.depth), close_box.y + (oppY / close_box.depth), 55, 50);
+				
+				ctx.fillStyle = "rgb(0,200,0)";
+				ctx.fillRect (front_box.x + (oppX / front_box.depth), front_box.y + (oppY / front_box.depth), 55, 50);
+
+				ctx.fillStyle = "rgb(0,200,0)";
+				ctx.fillRect (far_box.x + (oppX / far_box.depth), far_box.y + (oppY / far_box.depth), 55, 50);
 
 				$('#status').html(oppX +', '+ oppY);
 				
-				ctx.fillStyle = "rgb(0,200,0)";
-				ctx.fillRect(300 + closeX, 100 + closeY, 100, 100);
+				for(var i=0; i<display_objects.length;i++){
+					var x = display_objects[i].getX;
+					var y = display_objects[i].getY;
+					var depth = display_objects[i].getDepth;
+					
+					
+					ctx.fillStyle = "rgb(200,0,0)";
+					ctx.fillRect (x + (oppX / depth), y + (oppY / depth), 55, 50);
+				}
 				
 			}
 		</script>
