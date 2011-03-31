@@ -10,17 +10,17 @@
 					move(mouseX, mouseY);
 			   }); 
 			})
-		
-			var rect = '';
 			
-			function box(W, H, D) {
-				this.width = W;
-				this.height = H;
-				this.depth = D;
-			}
+			close_box = new Object();
+			box.x = 100;
+			box.y = 100;
+			box.r = 200;
+			box.depth = 10;
 		
 			function init() {
 				move(0,0);
+				
+				
 			}
 			
 			function move(x,y) {
