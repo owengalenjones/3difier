@@ -12,30 +12,40 @@
 			})
 			
 			close_box = new Object();
-			box.x = 100;
-			box.y = 100;
-			box.r = 200;
-			box.depth = 10;
+			close_box.x = 50;
+			close_box.y = 100;
+			close_box.depth = 10;
+			
+			front_box = new Object();
+			front_box.x = 300;
+			front_box.y = 100;
+			front_box.depth = 50;
+			
+			far_box = new Object();
+			far_box.x = 200;
+			far_box.y = 100;
+			far_box.depth = 5;
+			
+			var display_objects = (close_box, front_box, far_box);
+			
 		
 			function init() {
 				move(0,0);
-				
-				
 			}
 			
 			function move(x,y) {
 				var canvas = document.getElementById('tutorial');
 				var ctx = canvas.getContext('2d');
 				
-				var oppX = -x / 10;
-				var oppY = -y / 10;
+				var oppX = -x;
+				var oppY = -y;
 				
 				var closeX = -x / 5;
 				var closeY = -y / 5;
 				
 				ctx.clearRect(0,0,600,200);
 				ctx.fillStyle = "rgb(200,0,0)";
-				ctx.fillRect (100 + oppX, 100 + oppY, 55, 50);
+				ctx.fillRect (close_box.x + (oppX / close_box.depth), close_box.y + (oppY / close_box.depth), 55, 50);
 
 				$('#status').html(oppX +', '+ oppY);
 				
