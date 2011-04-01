@@ -12,7 +12,8 @@
 					move(mouseX, mouseY);
 				});
 				
-				var display_object_form_html = 'url: <input type="text" name="url" id="url" />';
+				var display_object_form_html = '<div><label for="url">url: </label><input type="text" name="url" id="url" class="text" /> <label for="x">x: </label><input type="text" maxlength="3" id="x" name="x" class="text" style="width: 40px;" /> <label for="y">y: </label><input type="text" maxlength="3" id="y" name="y" class="text" style="width: 40px;" /> <label for="depth">depth: </label><input type="text" maxlength="3" id="depth" name="depth" class="text" style="width: 40px;" /></div>';
+				$('#display_objects').append(display_object_form_html);
 								
 				$('#more').click(function() {
 					$('#display_objects').append(display_object_form_html);
@@ -71,15 +72,16 @@
 		</script>
 	</head>
 	<body>
-		<div id="container">
+		<div class="container showgrid">
 			<canvas id="canvas" width="600" height="200" style="border: 3px solid black;">Image</canvas>
 			<h2 id="status">0, 0</h2>
-			<form id="form">
-				<div id="display_objects">
-					url: <input type="text" name="url" id="url" />
-				</div>
+			<form id="form" class="inline">
+				<fieldset>
+					<legend>Add Objects</legend>
+				<div id="display_objects"></div>
 				<input type="button" id="more" value="More" />
 				<input type="submit" value="3Dify" />
+				</fieldset>
 			</form>
 		</div>
 	</body>
