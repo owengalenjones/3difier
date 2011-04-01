@@ -1,15 +1,16 @@
 <html>
 	<head>
+		<link rel="stylesheet" href="/css/blueprint-css/blueprint/screen.css" type="text/css" media="screen, projection" />
 		<script src="jquery-1.5.1.js"></script>
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
 				init();
-			   $("canvas").mousemove(function(e){
-					var mouseX = e.pageX - this.offsetLeft - 300;
-					var mouseY = e.pageY - this.offsetTop - 100;
-			      	//$('#status').html(mouseX +', '+ mouseY); // debugging
-					move(mouseX, mouseY);
-			   }); 
+				$("canvas").mousemove(function(e){
+				var mouseX = e.pageX - this.offsetLeft - 300;
+				var mouseY = e.pageY - this.offsetTop - 100;
+			     //$('#status').html(mouseX +', '+ mouseY); // debugging
+				move(mouseX, mouseY);
+				}); 
 			})
 			
 			function display_object(x, y, depth, color) {
@@ -42,7 +43,7 @@
 			}
 			
 			function move(x,y) {
-				var canvas = document.getElementById('tutorial');
+				var canvas = document.getElementById('canvas');
 				var ctx = canvas.getContext('2d');
 				
 				var oppX = -x;
@@ -67,10 +68,12 @@
 		</script>
 	</head>
 	<body>
-		<canvas id="tutorial" width="600" height="200" style="border: 3px solid black;">Image</canvas>
+		<canvas id="canvas" width="600" height="200" style="border: 3px solid black;">Image</canvas>
 		<h2 id="status">
 			0, 0
 		</h2>
+		<form>
+		</form>
 	</body>
 </html>
 		
