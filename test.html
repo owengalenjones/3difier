@@ -3,6 +3,7 @@
 		<script src="jquery-1.5.1.js"></script>
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
+				init();
 			   $("canvas").mousemove(function(e){
 					var mouseX = e.pageX - this.offsetLeft - 300;
 					var mouseY = e.pageY - this.offsetTop - 100;
@@ -30,32 +31,14 @@
 					return this.depth;
 				}
 			}
-			
-			close_box = new Object();
-			close_box.x = 50;
-			close_box.y = 130;
-			close_box.depth = 10;
-			
-			front_box = new Object();
-			front_box.x = 300;
-			front_box.y = 100;
-			front_box.depth = 50;
-			
-			far_box = new Object();
-			far_box.x = 200;
-			far_box.y = 50;
-			far_box.depth = 100;
-			
-			var box = new display_object(10,20,30,40);
-			
-			$('#status').html(box.getX);
-			
-			var display_objects = [ new display_object(10,20,30,40) ];
+					
+			var display_objects = [ new display_object(50,130,10,40),
+			 						new display_object(300,100,50,40),
+									new display_object(200,50,100,40),];
 			
 		
 			function init() {
 				move(0,0);
-				$('#status').html(display_objects[0].getX);
 			}
 			
 			function move(x,y) {
@@ -67,20 +50,13 @@
 				
 				ctx.clearRect(0,0,600,200);
 				ctx.fillStyle = "rgb(200,0,0)";
-				ctx.fillRect (close_box.x + (oppX / close_box.depth), close_box.y + (oppY / close_box.depth), 55, 50);
-				
-				ctx.fillStyle = "rgb(0,200,0)";
-				ctx.fillRect (front_box.x + (oppX / front_box.depth), front_box.y + (oppY / front_box.depth), 55, 50);
-
-				ctx.fillStyle = "rgb(0,200,0)";
-				ctx.fillRect (far_box.x + (oppX / far_box.depth), far_box.y + (oppY / far_box.depth), 55, 50);
 
 				$('#status').html(oppX +', '+ oppY);
 				
 				for(var i=0; i<display_objects.length;i++){
-					var x = display_objects[i].getX;
-					var y = display_objects[i].getY;
-					var depth = display_objects[i].getDepth;
+					var x = display_objects[i].getX();
+					var y = display_objects[i].getY();
+					var depth = display_objects[i].getDepth();
 					
 					
 					ctx.fillStyle = "rgb(200,0,0)";
@@ -90,7 +66,7 @@
 			}
 		</script>
 	</head>
-	<body onload="init();">
+	<body>
 		<canvas id="tutorial" width="600" height="200" style="border: 3px solid black;">Image</canvas>
 		<h2 id="status">
 			0, 0
