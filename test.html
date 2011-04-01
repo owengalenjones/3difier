@@ -1,16 +1,22 @@
 <html>
 	<head>
-		<link rel="stylesheet" href="/css/blueprint-css/blueprint/screen.css" type="text/css" media="screen, projection" />
+		<link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />
 		<script src="jquery-1.5.1.js"></script>
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
 				init();
 				$("canvas").mousemove(function(e){
-				var mouseX = e.pageX - this.offsetLeft - 300;
-				var mouseY = e.pageY - this.offsetTop - 100;
-			     //$('#status').html(mouseX +', '+ mouseY); // debugging
-				move(mouseX, mouseY);
-				}); 
+					var mouseX = e.pageX - this.offsetLeft - 300;
+					var mouseY = e.pageY - this.offsetTop - 100;
+				     //$('#status').html(mouseX +', '+ mouseY); // debugging
+					move(mouseX, mouseY);
+				});
+				
+				var display_object_form_html = 'url: <input type="text" name="url" id="url" />';
+								
+				$('#more').click(function() {
+					$('#display_objects').append(display_object_form_html);
+				});
 			})
 			
 			function display_object(x, y, depth, color) {
@@ -37,7 +43,6 @@
 			 						new display_object(300,100,50,40),
 									new display_object(200,50,100,40),];
 			
-		
 			function init() {
 				move(0,0);
 			}
@@ -58,22 +63,25 @@
 					var x = display_objects[i].getX();
 					var y = display_objects[i].getY();
 					var depth = display_objects[i].getDepth();
-					
-					
+						
 					ctx.fillStyle = "rgb(200,0,0)";
 					ctx.fillRect (x + (oppX / depth), y + (oppY / depth), 55, 50);
 				}
-				
 			}
 		</script>
 	</head>
 	<body>
-		<canvas id="canvas" width="600" height="200" style="border: 3px solid black;">Image</canvas>
-		<h2 id="status">
-			0, 0
-		</h2>
-		<form>
-		</form>
+		<div id="container">
+			<canvas id="canvas" width="600" height="200" style="border: 3px solid black;">Image</canvas>
+			<h2 id="status">0, 0</h2>
+			<form id="form">
+				<div id="display_objects">
+					url: <input type="text" name="url" id="url" />
+				</div>
+				<input type="button" id="more" value="More" />
+				<input type="submit" value="3Dify" />
+			</form>
+		</div>
 	</body>
 </html>
 		
