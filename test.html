@@ -14,12 +14,7 @@
 				     //$('#status').html(mouseX +', '+ mouseY); // debugging
 					move(mouseX, mouseY);
 				});
-				
-				// HOLDS THE FORM HTML
-				// TODO MAYBE HAS TO INCREMENT SO THAT EACH ID IS DIFFERENT
-				
-
-				
+			
 				// CALLED WHEN MORE BUTTON IS HIT				
 				$('#more').click(function() {
 					object_incrementer += 1;
@@ -29,7 +24,9 @@
 				
 				// CALLED ON SUBMIT
 				$('#form').submit(function() {
-					//$('#form').html(object_incrementer + 1 + " object");
+					// NEEDS TO INCREMENT THROUGH THE FORM GRABBING THE VALUES AS IT GOES
+					// MIGHT HAVE TO NOT BE A RESET AS THAT KILLS THE PAGE AND PARSING ATTRIBUTES SEEMS LIKE A PAIN
+					$('#form').html(object_incrementer + 1 + " object");
 				});
 			})
 			
