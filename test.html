@@ -18,15 +18,31 @@
 				// CALLED WHEN MORE BUTTON IS HIT				
 				$('#more').click(function() {
 					object_incrementer += 1;
-					
 					$('#display_objects').append(create_display_object_form(object_incrementer));
 				});
 				
 				// CALLED ON SUBMIT
-				$('#form').submit(function() {
+				$('#3dify').click(function() {
 					// NEEDS TO INCREMENT THROUGH THE FORM GRABBING THE VALUES AS IT GOES
 					// MIGHT HAVE TO NOT BE A RESET AS THAT KILLS THE PAGE AND PARSING ATTRIBUTES SEEMS LIKE A PAIN
-					$('#form').html(object_incrementer + 1 + " object");
+					for(var i=0; i<=object_incrementer;i++){
+						var url = $('#url'+ i).val();
+						var x = $('#x'+ i).val();
+						var y = $('#y'+ i).val();
+						var depth = $('#depth'+ i).val();
+						
+						var new_display_object = new display_object(x, y, depth, 200);
+						$('#status').html(new_display_object.getX() +'<br />');
+						display_objects = [new_display_object];
+						init();
+					//	display_objects.push(new display_object(
+					//		$('#x' + i).val(),
+					//		$('#i' + i).val(),
+					//		$('#depth' + i).val(),
+					//		200));
+						//init();
+						//$('#status').append($('#url'+ i).val() + '<br />');
+					}
 				});
 			})
 			
@@ -66,7 +82,7 @@
 					
 			var display_objects = [ new display_object(50,130,10,40),
 			 						new display_object(300,100,50,40),
-									new display_object(200,50,100,40),];
+									new display_object(200,50,100,40)];
 			
 			function init() {
 				move(0,0);
@@ -88,6 +104,8 @@
 					var x = display_objects[i].getX();
 					var y = display_objects[i].getY();
 					var depth = display_objects[i].getDepth();
+					
+					alert(x+" "+y+" "+depth);
 						
 					ctx.fillStyle = "rgb(200,0,0)";
 					ctx.fillRect (x + (oppX / depth), y + (oppY / depth), 55, 50);
@@ -104,7 +122,7 @@
 					<legend>Add Objects</legend>
 				<div id="display_objects"></div>
 				<input type="button" id="more" value="More" />
-				<input type="submit" value="3Dify" />
+				<input type="button" value="3Dify" id="3dify"/>
 				</fieldset>
 			</form>
 		</div>
