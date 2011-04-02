@@ -47,10 +47,10 @@
 						var x = $('#x'+ i).val();
 						var y = $('#y'+ i).val();
 						var depth = $('#depth'+ i).val();
-						
-						var new_display_object = new display_object(x, y, depth, 200);
-						$('#status').html(new_display_object.getX() +'<br />');
-						display_objects.push(new_display_object);
+						alert("adding " + x + " " + y + " " + depth);
+						display_objects[i] = new display_object(x, y, depth, 200);
+						//$('#status').html(new_display_object.getX() +'<br />');
+						//display_objects.push(new_display_object);
 					//	display_objects.push(new display_object(
 					//		$('#x' + i).val(),
 					//		$('#i' + i).val(),
@@ -62,14 +62,15 @@
 					init();
 				});
 				
+				// DEBUG
 				// REPORTS ALL THE DISPLAY_OBJECTS IN THE ARRAY
 				$('#debug').click(function() {
-					$('#status').html('<h2>Debug</h2>');
+					$('#status').html('<h2>Debug</h2>' + 'Count: ' + display_objects.length + "<br />");
 					for(var i=0; i<display_objects.length;i++){
-						var x = display_objects[i].getX();
-						var y = display_objects[i].getY();
-						var depth = display_objects[i].getDepth();
-						$('#status').append(i +": "+ x +" "+y +"<br />");
+						//var x = display_objects[i].getX();
+						//var y = display_objects[i].getY();
+						//var depth = display_objects[i].getDepth();
+						$('#status').append("<stong>"+i+"</strong>" + ": " + display_objects[i].report());
 					}
 				});
 			});
@@ -106,6 +107,10 @@
 				this.getDepth = function() {
 					return this.depth;
 				}
+				
+				this.report = function() {
+					return this.x + ":" + this.y + " " + this.depth + "<br />";
+				}
 			}
 					
 			var display_objects = [ new display_object(50,130,10,40),
@@ -123,22 +128,23 @@
 				var oppX = -x;
 				var oppY = -y;
 				
+				
+				
 				ctx.clearRect(0,0,600,200);
-				ctx.fillStyle = "rgb(200,0,0)";
-
-				$('#status').html(oppX +', '+ oppY);
 				$('#status').html('');
+				$('#status').append("<strong>" + oppX +', '+ oppY + '</strong><br />');
+				
 				for(var i=0; i<display_objects.length;i++){
 					var x = display_objects[i].getX();
 					var y = display_objects[i].getY();
 					var depth = display_objects[i].getDepth();
 					
-					$('#status').append(i +": "+ x +" "+y +"<br />");
+					$('#status').append(i +": "+ x +" + "+ (oppX / depth).toFixed(2) + " " + y + " + " + (oppY / depth).toFixed(2) + "<br />");
 					// TODO I THINK THE PROBLEM MIGHT BE THAT oppX AND oppY ARE HOLDING VALUES AND CREATING THIS IN A WEIRD PLACE
 				
 					ctx.fillStyle = "rgb(200,0,0)";
-					ctx.fillRect(x,y,10,10);
-					//ctx.fillRect (x + (oppX / depth), y + (oppY / depth), 10, 10);
+					//ctx.fillRect(x,y,10,10);  // WORKS FOR ADDING DYNAMIC OBJECT BUT THEY DONT MOVE OBVIOUSLY
+					ctx.fillRect (x + (oppX / depth), y + (oppY / depth), 10, 10);	// DOESNT SEEM TO WORK FOR DYNAMIC OBJECTS WTF?
 				}
 			}
 		</script>
