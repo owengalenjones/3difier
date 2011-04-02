@@ -21,6 +21,21 @@
 					$('#display_objects').append(create_display_object_form(object_incrementer));
 				});
 				
+				// THIS IS JUST FOR FILLING THE IN THE FORM QUICKLY FOR TESTING
+				$('#fill').click(function() {
+					$('#url0').val('blah');
+					$('#x0').val(10);
+					$('#y0').val(10);
+					$('#depth0').val(10);
+					for (var increment = 1; increment < 6; increment++){
+						$('#display_objects').append(create_display_object_form(increment));
+						$('#url'+increment).val('blah');
+						$('#x'+increment).val((increment+1)  * 10);
+						$('#y'+increment).val((increment+1) * 10);
+						$('#depth'+increment).val((increment+1)  * 10);
+					}	
+				})
+				
 				// CALLED ON SUBMIT
 				$('#3dify').click(function() {
 					// NEEDS TO INCREMENT THROUGH THE FORM GRABBING THE VALUES AS IT GOES
@@ -99,16 +114,18 @@
 				ctx.fillStyle = "rgb(200,0,0)";
 
 				$('#status').html(oppX +', '+ oppY);
-				
+				$('#status').html('');
 				for(var i=0; i<display_objects.length;i++){
 					var x = display_objects[i].getX();
 					var y = display_objects[i].getY();
 					var depth = display_objects[i].getDepth();
 					
-					alert(x+" "+y+" "+depth);
-						
+					$('#status').append(i +": "+ x +" "+y +"<br />");
+					// TODO I THINK THE PROBLEM MIGHT BE THAT oppX AND oppY ARE HOLDING VALUES AND CREATING THIS IN A WEIRD PLACE
+				
 					ctx.fillStyle = "rgb(200,0,0)";
-					ctx.fillRect (x + (oppX / depth), y + (oppY / depth), 55, 50);
+					ctx.fillRect(x,y,10,10);
+					//ctx.fillRect (x + (oppX / depth), y + (oppY / depth), 55, 50);
 				}
 			}
 		</script>
@@ -123,6 +140,7 @@
 				<div id="display_objects"></div>
 				<input type="button" id="more" value="More" />
 				<input type="button" value="3Dify" id="3dify"/>
+				<input type="button" value="fill" id="fill" />
 				</fieldset>
 			</form>
 		</div>
