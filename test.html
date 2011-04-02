@@ -28,7 +28,8 @@
 					$('#y0').val(10);
 					$('#depth0').val(10);
 					for (var increment = 1; increment < 6; increment++){
-						$('#display_objects').append(create_display_object_form(increment));
+						//$('#display_objects').append(create_display_object_form(increment));
+						$('#more').click();
 						$('#url'+increment).val('blah');
 						$('#x'+increment).val((increment+1)  * 10);
 						$('#y'+increment).val((increment+1) * 10);
@@ -48,7 +49,8 @@
 						
 						var new_display_object = new display_object(x, y, depth, 200);
 						$('#status').html(new_display_object.getX() +'<br />');
-						display_objects = [new_display_object];
+						display_objects = [];
+						display_objects.push(new_display_object);
 						init();
 					//	display_objects.push(new display_object(
 					//		$('#x' + i).val(),
@@ -95,6 +97,7 @@
 				}
 			}
 					
+			alert("do is being called");
 			var display_objects = [ new display_object(50,130,10,40),
 			 						new display_object(300,100,50,40),
 									new display_object(200,50,100,40)];
@@ -124,8 +127,8 @@
 					// TODO I THINK THE PROBLEM MIGHT BE THAT oppX AND oppY ARE HOLDING VALUES AND CREATING THIS IN A WEIRD PLACE
 				
 					ctx.fillStyle = "rgb(200,0,0)";
-					ctx.fillRect(x,y,10,10);
-					//ctx.fillRect (x + (oppX / depth), y + (oppY / depth), 55, 50);
+					//ctx.fillRect(x,y,10,10);
+					ctx.fillRect (x + (oppX / depth), y + (oppY / depth), 10, 10);
 				}
 			}
 		</script>
