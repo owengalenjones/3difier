@@ -6,7 +6,7 @@
 			jQuery(document).ready(function(){
 				var object_incrementer = 0;
 				init();
-				$('#display_objects').append(create_display_object_form(0));
+				$('#display_objects_form').append(create_display_object_form(0));
 				
 				$("canvas").mousemove(function(e){
 					var mouseX = e.pageX - this.offsetLeft - 300;
@@ -18,7 +18,7 @@
 				// CALLED WHEN MORE BUTTON IS HIT				
 				$('#more').click(function() {
 					object_incrementer += 1;
-					$('#display_objects').append(create_display_object_form(object_incrementer));
+					$('#display_objects_form').append(create_display_object_form(object_incrementer));
 				});
 				
 				// THIS IS JUST FOR FILLING THE IN THE FORM QUICKLY FOR TESTING
@@ -35,12 +35,13 @@
 						$('#y'+increment).val((increment+1) * 10);
 						$('#depth'+increment).val((increment+1)  * 10);
 					}	
-				})
+				});
 				
 				// CALLED ON SUBMIT
 				$('#3dify').click(function() {
 					// NEEDS TO INCREMENT THROUGH THE FORM GRABBING THE VALUES AS IT GOES
 					// MIGHT HAVE TO NOT BE A RESET AS THAT KILLS THE PAGE AND PARSING ATTRIBUTES SEEMS LIKE A PAIN
+					display_objects = [];
 					for(var i=0; i<=object_incrementer;i++){
 						var url = $('#url'+ i).val();
 						var x = $('#x'+ i).val();
@@ -49,9 +50,7 @@
 						
 						var new_display_object = new display_object(x, y, depth, 200);
 						$('#status').html(new_display_object.getX() +'<br />');
-						display_objects = [];
 						display_objects.push(new_display_object);
-						init();
 					//	display_objects.push(new display_object(
 					//		$('#x' + i).val(),
 					//		$('#i' + i).val(),
@@ -60,8 +59,20 @@
 						//init();
 						//$('#status').append($('#url'+ i).val() + '<br />');
 					}
+					init();
 				});
-			})
+				
+				// REPORTS ALL THE DISPLAY_OBJECTS IN THE ARRAY
+				$('#debug').click(function() {
+					$('#status').html('<h2>Debug</h2>');
+					for(var i=0; i<display_objects.length;i++){
+						var x = display_objects[i].getX();
+						var y = display_objects[i].getY();
+						var depth = display_objects[i].getDepth();
+						$('#status').append(i +": "+ x +" "+y +"<br />");
+					}
+				});
+			});
 			
 			function create_display_object_form(object_id) {
 				var display_object_form_html = '<div>'+
@@ -97,7 +108,6 @@
 				}
 			}
 					
-			alert("do is being called");
 			var display_objects = [ new display_object(50,130,10,40),
 			 						new display_object(300,100,50,40),
 									new display_object(200,50,100,40)];
@@ -127,8 +137,8 @@
 					// TODO I THINK THE PROBLEM MIGHT BE THAT oppX AND oppY ARE HOLDING VALUES AND CREATING THIS IN A WEIRD PLACE
 				
 					ctx.fillStyle = "rgb(200,0,0)";
-					//ctx.fillRect(x,y,10,10);
-					ctx.fillRect (x + (oppX / depth), y + (oppY / depth), 10, 10);
+					ctx.fillRect(x,y,10,10);
+					//ctx.fillRect (x + (oppX / depth), y + (oppY / depth), 10, 10);
 				}
 			}
 		</script>
@@ -140,10 +150,11 @@
 			<form id="form" class="inline">
 				<fieldset>
 					<legend>Add Objects</legend>
-				<div id="display_objects"></div>
+				<div id="display_objects_form"></div>
 				<input type="button" id="more" value="More" />
 				<input type="button" value="3Dify" id="3dify"/>
 				<input type="button" value="fill" id="fill" />
+				<input type="button" value="debug" id="debug" />
 				</fieldset>
 			</form>
 		</div>
