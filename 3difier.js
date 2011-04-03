@@ -15,7 +15,6 @@ jQuery(document).ready(function(){
 	display_objects = quick_sort(display_objects);
 	var object_incrementer = 0;
 	$('#canvas_holder').html('<canvas id="canvas" width="' + canvas_width + '" height="' + canvas_height + '" style="border: 3px solid black;">Image</canvas>');
-	init();
 	
 	$('#display_objects_form').append(create_display_object_form(0));
 	
@@ -24,7 +23,7 @@ jQuery(document).ready(function(){
 		var mouseY = e.pageY - this.offsetTop - 100;
 		move(mouseX, mouseY);
 	});
-
+		init();
 	// CALLED WHEN MORE BUTTON IS HIT				
 	$('#more').click(function() {
 		object_incrementer += 1;
@@ -105,10 +104,10 @@ function display_object(x, y, depth, url, width, height) {
 	this.x = parseFloat(x);
 	this.y = parseFloat(y);
 	if(width) {
-		this.width = width;
+		this.width = parseFloat(width);
 	}
 	if(height) {
-		this.height = height;
+		this.height = parseFloat(height);
 	}
 	this.depth = parseFloat(depth);
 	this.url = url;
