@@ -1,7 +1,13 @@
+var canvas_width = 900;
+var canvas_height = 400;
+
+var display_objects = [ new display_object(50,130,10,'http://cvcl.mit.edu/hybrid/cat2.jpg',40,40),
+ 						new display_object(300,100,50,'http://cvcl.mit.edu/hybrid/cat2.jpg',30,30),
+						new display_object(200,50,100,'http://cvcl.mit.edu/hybrid/cat2.jpg',20,20)];
+
 jQuery(document).ready(function(){
 	var object_incrementer = 0;
-	var canvas_width = 800;
-	var canvase_height = 400;
+	$('#canvas_holder').html('<canvas id="canvas" width="' + canvas_width + '" height="' + canvas_height + '" style="border: 3px solid black;">Image</canvas>');
 	init();
 	
 	$('#display_objects_form').append(create_display_object_form(0));
@@ -9,7 +15,6 @@ jQuery(document).ready(function(){
 	$("canvas").mousemove(function(e){
 		var mouseX = e.pageX - this.offsetLeft - 300;
 		var mouseY = e.pageY - this.offsetTop - 100;
-	     //$('#status').html(mouseX +', '+ mouseY); // debugging
 		move(mouseX, mouseY);
 	});
 
@@ -97,13 +102,8 @@ function display_object(x, y, depth, url, width, height) {
 		return this.x + ":" + this.y + " " + this.depth + "<br />";
 	}
 }
-
-var display_objects = [ new display_object(50,130,10,'http://cvcl.mit.edu/hybrid/cat2.jpg',40,40),
- 						new display_object(300,100,50,'http://cvcl.mit.edu/hybrid/cat2.jpg',30,30),
-						new display_object(200,50,100,'http://cvcl.mit.edu/hybrid/cat2.jpg',20,20)];
 	
 function init() {
-	$('#canvas_holder').html('<canvas id="canvas" width="800" height="400" style="border: 3px solid black;">Image</canvas>');
 	move(0,0);
 }
 
