@@ -1,5 +1,7 @@
 jQuery(document).ready(function(){
 	var object_incrementer = 0;
+	var canvas_width = 800;
+	var canvase_height = 400;
 	init();
 	
 	$('#display_objects_form').append(create_display_object_form(0));
@@ -36,10 +38,13 @@ jQuery(document).ready(function(){
 	// CALLED ON SUBMIT
 	$('#3dify').click(function() {
 		// NEEDS TO INCREMENT THROUGH THE FORM GRABBING THE VALUES AS IT GOES
+		display_objects = [];
 		for(var i=0; i<=object_incrementer;i++){
 			var url = $('#url'+ i).val();
 			var x = $('#x'+ i).val();
 			var y = $('#y'+ i).val();
+			var width = $('#width' + i).val();
+			var height = $('#height').val();
 			var depth = $('#depth'+ i).val();
 			display_objects[i] = new display_object(x, y, depth, url);
 		}
@@ -65,16 +70,26 @@ function create_display_object_form(object_id) {
 			'<input type="text" maxlength="3" id="x'+ object_id +'" name="x'+ object_id +'" class="text" style="width: 40px;" /> '+
 		'<label for="y'+ object_id +'">y: </label>'+
 			'<input type="text" maxlength="3" id="y'+ object_id +'" name="y'+ object_id +'" class="text" style="width: 40px;" /> '+
+		'<label for="width'+ object_id +'">width: </label>'+
+			'<input type="text" maxlength="3" id="width'+ object_id +'" name="width'+ object_id +'" class="text" style="width: 40px;" />'+
+		'<label for="height'+ object_id +'">height: </label>'+
+			'<input type="text" maxlength="3" id="height'+ object_id +'" name="height'+ object_id +'" class="text" style="width: 40px;" />'+
 		'<label for="depth'+ object_id +'">depth: </label>'+
 			'<input type="text" maxlength="3" id="depth'+ object_id +'" name="depth'+ object_id +'" class="text" style="width: 40px;" />'+
 	'</div>';
 	return display_object_form_html;
 }
 
-function display_object(x, y, depth, url) {
+function display_object(x, y, depth, url, width, height) {
 	//this.name = name;
 	this.x = parseFloat(x);
 	this.y = parseFloat(y);
+	if(width) {
+		this.width = width;
+	}
+	if(height) {
+		this.height = height;
+	}
 	this.depth = parseFloat(depth);
 	this.url = url;
 	
@@ -83,11 +98,12 @@ function display_object(x, y, depth, url) {
 	}
 }
 
-var display_objects = [ new display_object(50,130,10,'http://cvcl.mit.edu/hybrid/cat2.jpg'),
- 						new display_object(300,100,50,'http://cvcl.mit.edu/hybrid/cat2.jpg'),
-						new display_object(200,50,100,'http://cvcl.mit.edu/hybrid/cat2.jpg')];
+var display_objects = [ new display_object(50,130,10,'http://cvcl.mit.edu/hybrid/cat2.jpg',40,40),
+ 						new display_object(300,100,50,'http://cvcl.mit.edu/hybrid/cat2.jpg',30,30),
+						new display_object(200,50,100,'http://cvcl.mit.edu/hybrid/cat2.jpg',20,20)];
 	
 function init() {
+	$('#canvas_holder').html('<canvas id="canvas" width="800" height="400" style="border: 3px solid black;">Image</canvas>');
 	move(0,0);
 }
 
@@ -106,13 +122,19 @@ function move(x,y) {
 		var url = display_objects[i].url;
 		var x = display_objects[i].x;
 		var y = display_objects[i].y;
+		var width = display_objects[i].width;
+		var height = display_objects[i].height;
 		var depth = display_objects[i].depth;
 		
 		$('#status').append(i +"["+ url + "]: "+ (x + (oppX / depth)).toFixed(2) + " " + (y + (oppY / depth)).toFixed(2) + "<br />");
 		
 		var img = new Image();
 		img.src = url;
-		ctx.drawImage(img, x + (oppX / depth), y + (oppY / depth), 20, 20);
+		if(width && height) {
+			ctx.drawImage(img, x + (oppX / depth), y + (oppY / depth), width, height);
+		} else {
+			ctx.drawImage(img, x + (oppX / depth), y + (oppY / depth));
+		}
 		//ctx.fillRect(x + (oppX / depth),y + (oppY / depth),10,10);  // SOMETHING FREAKS OUT WHEN - IS CHANGED TO +
 		//ctx.fillRect (x + (oppX / display_objects[i].getDepth()), y + (oppY / depth), 10, 10);	// DOESNT SEEM TO WORK FOR DYNAMIC OBJECTS WTF?
 	}
@@ -134,6 +156,5 @@ function quick_sort(arr)
            right.push(arr[i]);
         }
     }
- 
     return quick_sort(left).concat(pivot, quick_sort(right));
 }
