@@ -1,11 +1,18 @@
 var canvas_width = 900;
 var canvas_height = 400;
 
-var display_objects = [ new display_object(50,130,10,'http://cvcl.mit.edu/hybrid/cat2.jpg',40,40),
- 						new display_object(300,100,50,'http://cvcl.mit.edu/hybrid/cat2.jpg',30,30),
-						new display_object(200,50,100,'http://cvcl.mit.edu/hybrid/cat2.jpg',20,20)];
-
+var display_objects = [ new display_object(-5,-5,80,'https://github.com/images/modules/404/parallax_bg.jpg'),
+ 						new display_object(300,100,20,'https://github.com/images/modules/404/parallax_octocat.png'),
+						new display_object(310,310,21,'https://github.com/images/modules/404/parallax_octocatshadow.png'),
+						new display_object(370,150,30,'https://github.com/images/modules/404/parallax_speeder.png'),
+						new display_object(370,260,31,'https://github.com/images/modules/404/parallax_speedershadow.png'),
+						new display_object(470,100,50,'https://github.com/images/modules/404/parallax_building_1.png'),
+						new display_object(700,100,65,'https://github.com/images/modules/404/parallax_building_2.png')];
+						
 jQuery(document).ready(function(){
+	$('#status').hide();
+	$('#no_debug').hide();
+	display_objects = quick_sort(display_objects);
 	var object_incrementer = 0;
 	$('#canvas_holder').html('<canvas id="canvas" width="' + canvas_width + '" height="' + canvas_height + '" style="border: 3px solid black;">Image</canvas>');
 	init();
@@ -29,14 +36,18 @@ jQuery(document).ready(function(){
 		$('#url0').val('http://cvcl.mit.edu/hybrid/cat2.jpg');
 		$('#x0').val(10);
 		$('#y0').val(10);
+		$('#width0').val(60);
+		$('#height0').val(60);
 		$('#depth0').val(10);
 		for (var increment = 1; increment < 6; increment++){
 			//$('#display_objects').append(create_display_object_form(increment));
 			$('#more').click();
 			$('#url'+increment).val('http://cvcl.mit.edu/hybrid/cat2.jpg');
-			$('#x'+increment).val((increment+1)  * 10);
-			$('#y'+increment).val((increment+1) * 10);
-			$('#depth'+increment).val((increment+1)  * 10);
+			$('#x'+increment).val((increment+1)  * 20);
+			$('#y'+increment).val((increment+1) * 20);
+			$('#width'+increment).val((6 - increment) * 10);
+			$('#height'+increment).val((6 - increment) * 10);
+			$('#depth'+increment).val((increment+1)  * 20);
 		}	
 	});
 	
@@ -49,9 +60,9 @@ jQuery(document).ready(function(){
 			var x = $('#x'+ i).val();
 			var y = $('#y'+ i).val();
 			var width = $('#width' + i).val();
-			var height = $('#height').val();
+			var height = $('#height' + i).val();
 			var depth = $('#depth'+ i).val();
-			display_objects[i] = new display_object(x, y, depth, url);
+			display_objects[i] = new display_object(x, y, depth, url, width, height);
 		}
 		display_objects = quick_sort(display_objects);
 		init();
@@ -60,11 +71,15 @@ jQuery(document).ready(function(){
 	// DEBUG
 	// REPORTS ALL THE DISPLAY_OBJECTS IN THE ARRAY
 	$('#debug').click(function() {
-		$('#status').html('<h2>Debug</h2>' + 'Count: ' + display_objects.length + "<br />");
-		for(var i=0; i<display_objects.length;i++){
-			$('#status').append("<stong>"+i+"</strong>" + ": " + display_objects[i].report());
-		}
+		$('#status').show();
+		$('#no_debug').show();
+		$('#debug').hide();
 	});
+	$('#no_debug').click(function() {
+		$('#status').hide();
+		$('#debug').show();
+		$('#no_debug').hide();
+	})
 });
 
 function create_display_object_form(object_id) {
@@ -114,7 +129,7 @@ function move(x,y) {
 	var oppX = -x;
 	var oppY = -y;
 	
-	ctx.clearRect(0,0,600,200);
+	ctx.clearRect(0,0,canvas_width,canvas_height);
 	$('#status').html('');
 	$('#status').append("<strong>" + oppX +', '+ oppY + '</strong><br />');
 	
