@@ -36,22 +36,12 @@ jQuery(document).ready(function(){
 	// CALLED ON SUBMIT
 	$('#3dify').click(function() {
 		// NEEDS TO INCREMENT THROUGH THE FORM GRABBING THE VALUES AS IT GOES
-		// MIGHT HAVE TO NOT BE A RESET AS THAT KILLS THE PAGE AND PARSING ATTRIBUTES SEEMS LIKE A PAIN
 		for(var i=0; i<=object_incrementer;i++){
 			var url = $('#url'+ i).val();
 			var x = $('#x'+ i).val();
 			var y = $('#y'+ i).val();
 			var depth = $('#depth'+ i).val();
 			display_objects[i] = new display_object(x, y, depth, 200);
-			//$('#status').html(new_display_object.getX() +'<br />');
-			//display_objects.push(new_display_object);
-		//	display_objects.push(new display_object(
-		//		$('#x' + i).val(),
-		//		$('#i' + i).val(),
-		//		$('#depth' + i).val(),
-		//		200));
-			//init();
-			//$('#status').append($('#url'+ i).val() + '<br />');
 		}
 		init();
 	});
@@ -80,24 +70,12 @@ function create_display_object_form(object_id) {
 	return display_object_form_html;
 }
 
-function display_object(x, y, depth, color) {
+function display_object(x, y, depth, url) {
 	//this.name = name;
 	this.x = parseFloat(x);
 	this.y = parseFloat(y);
 	this.depth = parseFloat(depth);
-	this.color = color;
-	
-	this.getX = function() {
-		return this.x;
-	}
-	
-	this.getY = function() {
-		return this.y;
-	}
-	
-	this.getDepth = function() {
-		return this.depth;
-	}
+	this.url = url;
 	
 	this.report = function() {
 		return this.x + ":" + this.y + " " + this.depth + "<br />";
@@ -108,9 +86,9 @@ function init() {
 	move(0,0);
 }
 
-var display_objects = [ new display_object(50,130,10,40),
- 						new display_object(300,100,50,40),
-						new display_object(200,50,100,40)];
+var display_objects = [ new display_object(50,130,10,'http://cvcl.mit.edu/hybrid/cat2.jpg'),
+ 						new display_object(300,100,50,'http://cvcl.mit.edu/hybrid/cat2.jpg'),
+						new display_object(200,50,100,'http://cvcl.mit.edu/hybrid/cat2.jpg')];
 
 function move(x,y) {
 	var canvas = document.getElementById('canvas');
@@ -124,15 +102,17 @@ function move(x,y) {
 	$('#status').append("<strong>" + oppX +', '+ oppY + '</strong><br />');
 	
 	for(var i=0; i<display_objects.length;i++){
+		var url = display_objects[i].url;
 		var x = display_objects[i].x;
 		var y = display_objects[i].y;
 		var depth = display_objects[i].depth;
 		
 		$('#status').append(i +": "+ (x + (oppX / depth)).toFixed(2) + " " + (y + (oppY / depth)).toFixed(2) + "<br />");
-		// TODO I THINK THE PROBLEM MIGHT BE THAT oppX AND oppY ARE HOLDING VALUES AND CREATING THIS IN A WEIRD PLACE
-	
-		ctx.fillStyle = "rgb(200,0,0)";
-		ctx.fillRect(x + (oppX / depth),y + (oppY / depth),10,10);  // SOMETHING FREAKS OUT WHEN - IS CHANGED TO +
+		
+		var img = new Image();
+		img.src = url;
+		ctx.drawImage(img, x + (oppX / depth), y + (oppY / depth), 20, 20);
+		//ctx.fillRect(x + (oppX / depth),y + (oppY / depth),10,10);  // SOMETHING FREAKS OUT WHEN - IS CHANGED TO +
 		//ctx.fillRect (x + (oppX / display_objects[i].getDepth()), y + (oppY / depth), 10, 10);	// DOESNT SEEM TO WORK FOR DYNAMIC OBJECTS WTF?
 	}
 }
