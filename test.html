@@ -6,16 +6,18 @@
 	</head>
 	<body>
 		<div class="container showgrid">
-			<canvas id="canvas" width="600" height="200" style="border: 3px solid black;">Image</canvas>
+			<div id="canvas_holder"></div>
 			<h2 id="status">0, 0</h2>
 			<form id="form" class="inline">
 				<fieldset>
 					<legend>Add Objects</legend>
-				<div id="display_objects_form"></div>
-				<input type="button" id="more" value="More" />
-				<input type="button" value="3Dify" id="3dify"/>
-				<input type="button" value="fill" id="fill" />
-				<input type="button" value="debug" id="debug" />
+					Objects will be sorted by depth, the higher the depth the further "into" the image the object is.  Height and width are optional, if unset the picture's original dimensions will be used.
+					
+					<div id="display_objects_form"></div>
+					<input type="button" id="more" value="More" />
+					<input type="button" value="3Dify" id="3dify"/>
+					<input type="button" value="fill" id="fill" />
+					<input type="button" value="debug" id="debug" />
 				</fieldset>
 			</form>
 		</div>
