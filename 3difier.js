@@ -19,14 +19,14 @@ jQuery(document).ready(function(){
 	
 	// THIS IS JUST FOR FILLING THE IN THE FORM QUICKLY FOR TESTING
 	$('#fill').click(function() {
-		$('#url0').val('blah');
+		$('#url0').val('http://cvcl.mit.edu/hybrid/cat2.jpg');
 		$('#x0').val(10);
 		$('#y0').val(10);
 		$('#depth0').val(10);
 		for (var increment = 1; increment < 6; increment++){
 			//$('#display_objects').append(create_display_object_form(increment));
 			$('#more').click();
-			$('#url'+increment).val('blah');
+			$('#url'+increment).val('http://cvcl.mit.edu/hybrid/cat2.jpg');
 			$('#x'+increment).val((increment+1)  * 10);
 			$('#y'+increment).val((increment+1) * 10);
 			$('#depth'+increment).val((increment+1)  * 10);
@@ -41,8 +41,9 @@ jQuery(document).ready(function(){
 			var x = $('#x'+ i).val();
 			var y = $('#y'+ i).val();
 			var depth = $('#depth'+ i).val();
-			display_objects[i] = new display_object(x, y, depth, 200);
+			display_objects[i] = new display_object(x, y, depth, url);
 		}
+		display_objects = quick_sort(display_objects);
 		init();
 	});
 	
@@ -81,14 +82,14 @@ function display_object(x, y, depth, url) {
 		return this.x + ":" + this.y + " " + this.depth + "<br />";
 	}
 }
-	
-function init() {
-	move(0,0);
-}
 
 var display_objects = [ new display_object(50,130,10,'http://cvcl.mit.edu/hybrid/cat2.jpg'),
  						new display_object(300,100,50,'http://cvcl.mit.edu/hybrid/cat2.jpg'),
 						new display_object(200,50,100,'http://cvcl.mit.edu/hybrid/cat2.jpg')];
+	
+function init() {
+	move(0,0);
+}
 
 function move(x,y) {
 	var canvas = document.getElementById('canvas');
@@ -107,7 +108,7 @@ function move(x,y) {
 		var y = display_objects[i].y;
 		var depth = display_objects[i].depth;
 		
-		$('#status').append(i +": "+ (x + (oppX / depth)).toFixed(2) + " " + (y + (oppY / depth)).toFixed(2) + "<br />");
+		$('#status').append(i +"["+ url + "]: "+ (x + (oppX / depth)).toFixed(2) + " " + (y + (oppY / depth)).toFixed(2) + "<br />");
 		
 		var img = new Image();
 		img.src = url;
@@ -115,4 +116,24 @@ function move(x,y) {
 		//ctx.fillRect(x + (oppX / depth),y + (oppY / depth),10,10);  // SOMETHING FREAKS OUT WHEN - IS CHANGED TO +
 		//ctx.fillRect (x + (oppX / display_objects[i].getDepth()), y + (oppY / depth), 10, 10);	// DOESNT SEEM TO WORK FOR DYNAMIC OBJECTS WTF?
 	}
+}
+
+function quick_sort(arr)
+{
+    if (arr.length == 0)
+        return [];
+ 
+    var left = new Array();
+    var right = new Array();
+    var pivot = arr[0];
+ 
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i].depth > pivot.depth) {
+           left.push(arr[i]);
+        } else {
+           right.push(arr[i]);
+        }
+    }
+ 
+    return quick_sort(left).concat(pivot, quick_sort(right));
 }
