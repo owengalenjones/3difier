@@ -1,3 +1,4 @@
 This script allows users to dynamically create a Javascript Parallax image a la https://github.com/404 or https://github.com/500.
 
 TODO: Still need to figure out how to save images.
+TODO: Need to encapsulate js more needs a creator and a smaller reader.
