@@ -9,7 +9,7 @@ var display_objects = [ new display_object(-5,-5,80,'https://github.com/images/m
 						new display_object(470,100,50,'https://github.com/images/modules/404/parallax_building_1.png'),
 						new display_object(700,100,65,'https://github.com/images/modules/404/parallax_building_2.png')];
 						
-jQuery(document).ready(function(){
+$(function(){
 	$('#status').hide();
 	$('#no_debug').hide();
 	display_objects = quick_sort(display_objects);
@@ -23,7 +23,9 @@ jQuery(document).ready(function(){
 		var mouseY = e.pageY - this.offsetTop - 100;
 		move(mouseX, mouseY);
 	});
-		init();
+	
+	init();
+	
 	// CALLED WHEN MORE BUTTON IS HIT				
 	$('#more').click(function() {
 		object_incrementer += 1;
@@ -101,16 +103,23 @@ function create_display_object_form(object_id) {
 
 function display_object(x, y, depth, url, width, height) {
 	//this.name = name;
+	this.url = url;
 	this.x = parseFloat(x);
 	this.y = parseFloat(y);
+	this.depth = parseFloat(depth);
+	
+	this.getObj = function(){
+		var img = new Image();
+		img.src = this.url;
+		return img;
+	};
+	
 	if(width) {
 		this.width = parseFloat(width);
 	}
 	if(height) {
 		this.height = parseFloat(height);
 	}
-	this.depth = parseFloat(depth);
-	this.url = url;
 	
 	this.report = function() {
 		return this.x + ":" + this.y + " " + this.depth + "<br />";
@@ -118,7 +127,26 @@ function display_object(x, y, depth, url, width, height) {
 }
 	
 function init() {
-	move(0,0);
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+	
+	for(var i=0; i<display_objects.length;i++){
+		var img = new Image();
+		img = display_objects[i].getObj();
+		var x = display_objects[i].x;
+		var y = display_objects[i].y;
+		var width = display_objects[i].width;
+		var height = display_objects[i].height;
+		var depth = display_objects[i].depth;
+		
+		$(img).load(function() {
+			if(width && height) {
+				ctx.drawImage(img, x, y, width, height);
+			} else {
+				ctx.drawImage(img, x, y);
+			}
+		});
+	}
 }
 
 function move(x,y) {
@@ -133,24 +161,22 @@ function move(x,y) {
 	$('#status').append("<strong>" + oppX +', '+ oppY + '</strong><br />');
 	
 	for(var i=0; i<display_objects.length;i++){
-		var url = display_objects[i].url;
+		var img = new Image();
+		img = display_objects[i].getObj();
 		var x = display_objects[i].x;
 		var y = display_objects[i].y;
 		var width = display_objects[i].width;
 		var height = display_objects[i].height;
 		var depth = display_objects[i].depth;
 		
-		$('#status').append(i +"["+ url + "]: "+ (x + (oppX / depth)).toFixed(2) + " " + (y + (oppY / depth)).toFixed(2) + "<br />");
-		
-		var img = new Image();
-		img.src = url;
-		if(width && height) {
-			ctx.drawImage(img, x + (oppX / depth), y + (oppY / depth), width, height);
-		} else {
-			ctx.drawImage(img, x + (oppX / depth), y + (oppY / depth));
-		}
-		//ctx.fillRect(x + (oppX / depth),y + (oppY / depth),10,10);  // SOMETHING FREAKS OUT WHEN - IS CHANGED TO +
-		//ctx.fillRect (x + (oppX / display_objects[i].getDepth()), y + (oppY / depth), 10, 10);	// DOESNT SEEM TO WORK FOR DYNAMIC OBJECTS WTF?
+		$('#status').append(i +"["+ img + "]: "+ (x + (oppX / depth)).toFixed(2) + " " + (y + (oppY / depth)).toFixed(2) + "<br />");
+		$(img).load(function() {
+			if(width && height) {
+				ctx.drawImage(img, x + (oppX / depth), y + (oppY / depth), width, height);
+			} else {
+				ctx.drawImage(img, x + (oppX / depth), y + (oppY / depth));
+			}
+		});
 	}
 }
 
