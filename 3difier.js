@@ -64,12 +64,10 @@ $(function(){
 			var height = $('#height' + i).val();
 			var depth = $('#depth'+ i).val();
 			display_objects[i] = new display_object(x, y, depth, url, width, height);
-			display_objects[i].draw(display_objects[i].url, i);
 		}
 		display_objects = quick_sort(display_objects);
-		$(window).load(function () {
-			init();
-		});
+		//move(0,0);
+		init();
 	});
 	
 	// DEBUG
@@ -107,35 +105,29 @@ function create_display_object_form(object_id) {
 function display_object(x, y, depth, url, width, height) {
 	//this.name = name;
 	this.url = url;
+	$.get(url, function(data) {
+	  alert('Load was performed.');
+	});
+	this.image = new Image();
+	this.image.src = url;
 	this.x = parseFloat(x);
 	this.y = parseFloat(y);
 	this.depth = parseFloat(depth);
-	
-	this.draw = function(url, id) {
-		$("#canvas").after(function() {
-			return '<img src="'+url+'" id="display_object_img'+id+'"/>';
-		});
-		$('#display_object_img'+id).css("visibility", "hidden");
-		$('#display_object_img'+id).css("position", "absolute");
-	}
 	
 	if(width) { this.width = parseFloat(width); }
 	if(height) { this.height = parseFloat(height); }
 	this.report = function() {
 		return this.x + ":" + this.y + " " + this.depth + "<br />";
 	}
-}
+};
 	
 function init() {
 	var canvas = $('canvas').get(0);
 	var ctx = canvas.getContext('2d');
 	ctx.clearRect(0,0,canvas_width,canvas_height);
-	
-	for(var i=0; i<display_objects.length;i++){
-		display_objects[i].draw(display_objects[i].url, i);
-	}
-	
+	alert("initin it");
 	$(window).load(function () {
+		alert("window all loaded n shit");
 		for(var i=0; i<display_objects.length;i++){
 			var x = display_objects[i].x;
 			var y = display_objects[i].y;
@@ -144,9 +136,9 @@ function init() {
 			var depth = display_objects[i].depth;
 
 			if(width && height) {
-				ctx.drawImage(($('#display_object_img'+i).get(0)), x, y, width, height);
+				ctx.drawImage(display_objects[i].image, x, y, width, height);
 			} else {
-				ctx.drawImage(($('#display_object_img'+i).get(0)), x, y);
+				ctx.drawImage(display_objects[i].image, x, y);
 			}
 		}
 	});
@@ -172,9 +164,9 @@ function move(x,y) {
 		var depth = display_objects[i].depth;
 
 		if(width && height) {
-			ctx.drawImage($('#display_object_img'+i).get(0), x + (oppX / depth), y + (oppY / depth), width, height);
+			ctx.drawImage(display_objects[i].image, x + (oppX / depth), y + (oppY / depth), width, height);
 		} else {
-			ctx.drawImage($('#display_object_img'+i).get(0), x + (oppX / depth), y + (oppY / depth));
+			ctx.drawImage(display_objects[i].image, x + (oppX / depth), y + (oppY / depth));
 		}
 	}
 }
