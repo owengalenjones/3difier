@@ -64,9 +64,12 @@ $(function(){
 			var height = $('#height' + i).val();
 			var depth = $('#depth'+ i).val();
 			display_objects[i] = new display_object(x, y, depth, url, width, height);
+			display_objects[i].draw(display_objects[i].url, i);
 		}
 		display_objects = quick_sort(display_objects);
-		init();
+		$(window).load(function () {
+			init();
+		});
 	});
 	
 	// DEBUG
@@ -126,6 +129,7 @@ function display_object(x, y, depth, url, width, height) {
 function init() {
 	var canvas = $('canvas').get(0);
 	var ctx = canvas.getContext('2d');
+	ctx.clearRect(0,0,canvas_width,canvas_height);
 	
 	for(var i=0; i<display_objects.length;i++){
 		display_objects[i].draw(display_objects[i].url, i);
