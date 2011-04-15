@@ -108,75 +108,70 @@ function display_object(x, y, depth, url, width, height) {
 	this.y = parseFloat(y);
 	this.depth = parseFloat(depth);
 	
-	this.getObj = function(){
-		var img = new Image();
-		img.src = this.url;
-		return img;
-	};
-	
-	if(width) {
-		this.width = parseFloat(width);
-	}
-	if(height) {
-		this.height = parseFloat(height);
+	this.draw = function(url, id) {
+		$("#canvas").after(function() {
+			return '<img src="'+url+'" id="display_object_img'+id+'"/>';
+		});
+		$('#display_object_img'+id).css("visibility", "hidden");
+		$('#display_object_img'+id).css("position", "absolute");
 	}
 	
+	if(width) { this.width = parseFloat(width); }
+	if(height) { this.height = parseFloat(height); }
 	this.report = function() {
 		return this.x + ":" + this.y + " " + this.depth + "<br />";
 	}
 }
 	
 function init() {
-	var canvas = document.getElementById('canvas');
+	var canvas = $('canvas').get(0);
 	var ctx = canvas.getContext('2d');
 	
 	for(var i=0; i<display_objects.length;i++){
-		var img = new Image();
-		img = display_objects[i].getObj();
-		var x = display_objects[i].x;
-		var y = display_objects[i].y;
-		var width = display_objects[i].width;
-		var height = display_objects[i].height;
-		var depth = display_objects[i].depth;
-		
-		$(img).load(function() {
-			if(width && height) {
-				ctx.drawImage(img, x, y, width, height);
-			} else {
-				ctx.drawImage(img, x, y);
-			}
-		});
+		display_objects[i].draw(display_objects[i].url, i);
 	}
+	
+	$(window).load(function () {
+		for(var i=0; i<display_objects.length;i++){
+			var x = display_objects[i].x;
+			var y = display_objects[i].y;
+			var width = display_objects[i].width;
+			var height = display_objects[i].height;
+			var depth = display_objects[i].depth;
+
+			if(width && height) {
+				ctx.drawImage(($('#display_object_img'+i).get(0)), x, y, width, height);
+			} else {
+				ctx.drawImage(($('#display_object_img'+i).get(0)), x, y);
+			}
+		}
+	});
 }
 
 function move(x,y) {
-	var canvas = document.getElementById('canvas');
+	var canvas = $('canvas').get(0);
 	var ctx = canvas.getContext('2d');
 	
 	var oppX = -x;
 	var oppY = -y;
 	
 	ctx.clearRect(0,0,canvas_width,canvas_height);
+	
 	$('#status').html('');
 	$('#status').append("<strong>" + oppX +', '+ oppY + '</strong><br />');
 	
 	for(var i=0; i<display_objects.length;i++){
-		var img = new Image();
-		img = display_objects[i].getObj();
 		var x = display_objects[i].x;
 		var y = display_objects[i].y;
 		var width = display_objects[i].width;
 		var height = display_objects[i].height;
 		var depth = display_objects[i].depth;
-		
-		$('#status').append(i +"["+ img + "]: "+ (x + (oppX / depth)).toFixed(2) + " " + (y + (oppY / depth)).toFixed(2) + "<br />");
-		$(img).load(function() {
-			if(width && height) {
-				ctx.drawImage(img, x + (oppX / depth), y + (oppY / depth), width, height);
-			} else {
-				ctx.drawImage(img, x + (oppX / depth), y + (oppY / depth));
-			}
-		});
+
+		if(width && height) {
+			ctx.drawImage($('#display_object_img'+i).get(0), x + (oppX / depth), y + (oppY / depth), width, height);
+		} else {
+			ctx.drawImage($('#display_object_img'+i).get(0), x + (oppX / depth), y + (oppY / depth));
+		}
 	}
 }
 
