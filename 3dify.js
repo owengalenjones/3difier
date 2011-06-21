@@ -1,6 +1,8 @@
 (function( $ ) {
+	var $canvas_element = undefined;
 	$.fn.threedeeify = function(display_objects, width_arg, height_arg) {
-		canvas_element = undefined;
+		var chained_this = this;
+		
 		if(this.is("canvas")) {
 			canvas_element = this;
 		} else {
@@ -15,7 +17,6 @@
 			this.append('<canvas id="threedeeified_canvas" width="' + width + '" height="' + height + '"></canvas>');
 			canvas_element = $("#threedeeified_canvas");
 		}
-		
-		
+		return chained_this;
 	};
 })( jQuery );
