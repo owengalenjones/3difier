@@ -24,6 +24,8 @@ $(function(){
 		move(mouseX, mouseY);
 	});
 	
+		$('#test').threedeeify();
+	
 	init();
 	
 	// CALLED WHEN MORE BUTTON IS HIT				
@@ -127,7 +129,6 @@ function init() {
 	ctx.clearRect(0,0,canvas_width,canvas_height);
 	alert("initin it");
 	$(window).load(function () {
-		alert("window all loaded n shit");
 		for(var i=0; i<display_objects.length;i++){
 			var x = display_objects[i].x;
 			var y = display_objects[i].y;
