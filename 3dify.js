@@ -38,6 +38,7 @@
 			if(height) { this.height = parseFloat(height); }
 			//alert(this.serialize());
 			display_objects.push(this);
+			display_objects = $.fn.threedeeify('quick_sort', display_objects);
 			return this;
 		},
 		start : function() {
@@ -46,9 +47,7 @@
 				mouseY = -(e.pageY - this.offsetTop - (canvas_element.height() / 2));
 				if(debug != undefined) { $.fn.threedeeify('debug'); }
 			});
-			
 
-			
 			$.each( display_objects, function(index, display_object ) {
 				var canvas = canvas_element.get(0);
 				var ctx = canvas.getContext('2d');
@@ -66,6 +65,23 @@
 				debug = $('#threedeeified_debug');
 			}
 			debug.text(mouseX + " " + mouseY);
+		},
+		quick_sort : function(arr) {
+		    if (arr.length == 0)
+		        return [];
+
+		    var left = new Array();
+		    var right = new Array();
+		    var pivot = arr[0];
+
+		    for (var i = 1; i < arr.length; i++) {
+		        if (arr[i].depth > pivot.depth) {
+		           left.push(arr[i]);
+		        } else {
+		           right.push(arr[i]);
+		        }
+		    }
+		    return $.fn.threedeeify('quick_sort', left).concat(pivot, $.fn.threedeeify('quick_sort', right));
 		}
 	};
 	
