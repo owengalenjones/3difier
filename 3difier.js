@@ -24,7 +24,9 @@ $(function(){
 		move(mouseX, mouseY);
 	});
 	
-		$('#test').threedeeify();
+	$('#test').threedeeify('init',900,400).addClass("nice");
+	$('#test').threedeeify('start');
+	$('#test').threedeeify('debug');
 	
 	init();
 	
@@ -127,7 +129,6 @@ function init() {
 	var canvas = $('canvas').get(0);
 	var ctx = canvas.getContext('2d');
 	ctx.clearRect(0,0,canvas_width,canvas_height);
-	alert("initin it");
 	$(window).load(function () {
 		for(var i=0; i<display_objects.length;i++){
 			var x = display_objects[i].x;
