@@ -38,24 +38,30 @@
 			return this;
 		},
 		start : function() {
-			$(canvas_element).mousemove(function(e){
-				mouseX = e.pageX - this.offsetLeft - (canvas_element.width() / 2);
-				mouseY = -(e.pageY - this.offsetTop - (canvas_element.height() / 2));
-				if(debug != undefined) { $.fn.threedeeify('debug'); }
-			});
-			
 			display_objects = $.fn.threedeeify('quick_sort', display_objects);
-			
 			var canvas = canvas_element.get(0);
 			var ctx = canvas.getContext('2d');
-
+			
 			$(window).load(function () {
 				$.each( display_objects, function(index, display_object ) {
 					var img = new Image();
 					img.src = display_object.url;
+					display_object.image = img;
 					ctx.drawImage( img, display_object.x, display_object.y );
 				});
-			});	
+			});
+			
+			$(canvas_element).mousemove(function(e){
+				ctx.clearRect(0,0,canvas_element.width(),canvas_element.height());
+				
+				mouseX = e.pageX - this.offsetLeft - (canvas_element.width() / 2);
+				mouseY = -(e.pageY - this.offsetTop - (canvas_element.height() / 2));
+				if(debug != undefined) { $.fn.threedeeify('debug'); }
+				
+				$.each( display_objects, function(index, display_object ) {
+					ctx.drawImage( display_object.image, display_object.x - (mouseX / display_object.depth), display_object.y + (mouseY / display_object.depth) );
+				});
+			});
 		},
 		debug : function() {
 			if(debug == undefined) {
