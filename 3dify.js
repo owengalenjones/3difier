@@ -27,18 +27,14 @@
 		},
 		add_object : function(x, y, depth, url, width, height) {
 			this.url = url;
-			var img = new Image();
-			img.src = url;
-			this.image = img;
+			this.image = undefined;
 			this.x = parseFloat(x);
 			this.y = parseFloat(y);
 			this.depth = parseFloat(depth);
 
 			if(width) { this.width = parseFloat(width); }
 			if(height) { this.height = parseFloat(height); }
-			//alert(this.serialize());
 			display_objects.push(this);
-			display_objects = $.fn.threedeeify('quick_sort', display_objects);
 			return this;
 		},
 		start : function() {
@@ -47,17 +43,19 @@
 				mouseY = -(e.pageY - this.offsetTop - (canvas_element.height() / 2));
 				if(debug != undefined) { $.fn.threedeeify('debug'); }
 			});
+			
+			display_objects = $.fn.threedeeify('quick_sort', display_objects);
+			
+			var canvas = canvas_element.get(0);
+			var ctx = canvas.getContext('2d');
 
-			$.each( display_objects, function(index, display_object ) {
-				var canvas = canvas_element.get(0);
-				var ctx = canvas.getContext('2d');
-				
-				var img = new Image();
-				img.src = display_object.url;
-				img.onload = function() {
+			$(window).load(function () {
+				$.each( display_objects, function(index, display_object ) {
+					var img = new Image();
+					img.src = display_object.url;
 					ctx.drawImage( img, display_object.x, display_object.y );
-				}
-			});
+				});
+			});	
 		},
 		debug : function() {
 			if(debug == undefined) {
