@@ -12,7 +12,6 @@
 		</div>
 		<script type="text/javascript">
 			$(function() {
-				$('#test').threedeeify('init',900,400).addClass("nice");
 				var objects = {"objects": [
 					{"x": "-5", "y": "-5", "depth": "80", "url": "https://github.com/images/modules/404/parallax_bg.jpg"},
 					{"x": "300", "y": "100", "depth": "20", "url": "https://github.com/images/modules/404/parallax_octocat.png"},
@@ -22,9 +21,7 @@
 					{"x": "470", "y": "100", "depth": "50", "url": "https://github.com/images/modules/404/parallax_building_1.png"},
 					{"x": "700", "y": "100", "depth": "65", "url": "https://github.com/images/modules/404/parallax_building_2.png"}
 				]};
-				$('#test').threedeeify('add_object', objects);
-				$('#test').threedeeify('start');
-				$('#test').threedeeify('debug');
+				$('#test').threedeeify('init',900,400).threedeeify('add_object', objects).threedeeify('start').threedeeify('debug');
 			});
 		</script>
 	</body>

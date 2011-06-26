@@ -37,6 +37,7 @@
 				if(height) { this.height = parseFloat(height); }
 				display_objects.push(this);
 			} );
+			return canvas_element;
 		},
 		start : function() {
 			display_objects = $.fn.threedeeify('quick_sort', display_objects);
@@ -63,6 +64,7 @@
 					ctx.drawImage( display_object.image, display_object.x - (mouseX / display_object.depth), display_object.y + (mouseY / display_object.depth) );
 				});
 			});
+			return canvas_element;
 		},
 		debug : function() {
 			if(debug == undefined) {
@@ -70,6 +72,7 @@
 				debug = $('#threedeeified_debug');
 			}
 			debug.text(mouseX + " " + mouseY);
+			return canvas_element;
 		},
 		quick_sort : function(arr) {
 		    if (arr.length == 0)
