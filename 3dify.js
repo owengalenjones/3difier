@@ -25,17 +25,18 @@
 			}		
 			return chained_this;
 		},
-		add_object : function(x, y, depth, url, width, height) {
-			this.url = url;
-			this.image = undefined;
-			this.x = parseFloat(x);
-			this.y = parseFloat(y);
-			this.depth = parseFloat(depth);
+		add_object : function(objects_list) {
+			$.each( objects_list.objects, function(index, display_object) {
+				this.url = display_object.url;
+				this.image = undefined;
+				this.x = parseFloat(display_object.x);
+				this.y = parseFloat(display_object.y);
+				this.depth = parseFloat(display_object.depth);
 
-			if(width) { this.width = parseFloat(width); }
-			if(height) { this.height = parseFloat(height); }
-			display_objects.push(this);
-			return this;
+				if(width) { this.width = parseFloat(width); }
+				if(height) { this.height = parseFloat(height); }
+				display_objects.push(this);
+			} );
 		},
 		start : function() {
 			display_objects = $.fn.threedeeify('quick_sort', display_objects);
