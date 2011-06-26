@@ -61,7 +61,7 @@
 				if(debug != undefined) { $.fn.threedeeify('debug', e); }
 				
 				$.each( display_objects, function(index, display_object ) {
-					ctx.drawImage( display_object.image, display_object.x - (mouseX / display_object.depth), display_object.y + (mouseY / display_object.depth) );
+					ctx.drawImage( display_object.image, display_object.x - (mouseX / display_object.depth), display_object.y - (mouseY / display_object.depth) );
 				});
 			});
 			return canvas_element;
