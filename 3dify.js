@@ -14,7 +14,6 @@
 			} else {
 				width = 900;
 				height = 400;
-				alert(canvas_JSON.width + " " + canvas_JSON.height);
 				if( canvas_JSON.width != undefined ) {
 					width = canvas_JSON.width;
 				}
