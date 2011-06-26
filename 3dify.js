@@ -43,6 +43,7 @@
 			display_objects = $.fn.threedeeify('quick_sort', display_objects);
 			var canvas = canvas_element.get(0);
 			var ctx = canvas.getContext('2d');
+			var offset = canvas_element.offset();
 			
 			$(window).load(function () {
 				$.each( display_objects, function(index, display_object ) {
@@ -55,10 +56,9 @@
 			
 			$(canvas_element).mousemove(function(e){
 				ctx.clearRect(0,0,canvas_element.width(),canvas_element.height());
-				
-				mouseX = e.pageX - this.offsetLeft - (canvas_element.width() / 2);
-				mouseY = -(e.pageY - this.offsetTop - (canvas_element.height() / 2));
-				if(debug != undefined) { $.fn.threedeeify('debug'); }
+				mouseX = e.pageX - offset.left - (canvas_element.width() / 2);
+				mouseY = -(e.pageY - offset.top - (canvas_element.height() / 2));
+				if(debug != undefined) { $.fn.threedeeify('debug', e); }
 				
 				$.each( display_objects, function(index, display_object ) {
 					ctx.drawImage( display_object.image, display_object.x - (mouseX / display_object.depth), display_object.y + (mouseY / display_object.depth) );
@@ -66,12 +66,17 @@
 			});
 			return canvas_element;
 		},
-		debug : function() {
+		debug : function(mouse_move_event) {
 			if(debug == undefined) {
-				canvas_element.parent().append( '<p id="threedeeified_debug"></p>' );
+				canvas_element.parent().append( '<div id="threedeeified_debug"></div>' );
 				debug = $('#threedeeified_debug');
 			}
-			debug.text(mouseX + " " + mouseY);
+			if(mouse_move_event != undefined) {
+				var offset = canvas_element.offset();
+				mouseX = mouse_move_event.pageX - offset.left;
+				mouseY = (mouse_move_event.pageY - offset.top);
+				debug.html("<strong>X: </strong><em>" + mouseX + "</em><strong>, Y: </strong><em>" + mouseY +"</em>");
+			}
 			return canvas_element;
 		},
 		quick_sort : function(arr) {
