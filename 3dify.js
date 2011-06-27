@@ -16,10 +16,14 @@
 			} else {
 				width = 900;
 				height = 400;
-				if( canvas_JSON.width != undefined ) width = canvas_JSON.width;
-				if( canvas_JSON.height != undefined ) height = canvas_JSON.height;
+				if( canvas_JSON.width != undefined ) {
+					width = canvas_JSON.width;
+				}
+				if( canvas_JSON.height != undefined ) {
+					height = canvas_JSON.height;
+				}
 				if( canvas_JSON.invert_x == "true" ) invertX = true;
-				if( canvas_JSON.invert_y == "true" ) invertY = true;
+				if( canvas_JSON.invert_y != undefined ) invertY = true;
 
 				this.append( '<canvas id="threedeeified_canvas" width="' + width + '" height="' + height + '"></canvas>' );
 				canvas_element = $( "#threedeeified_canvas" );
@@ -89,7 +93,8 @@
 			return canvas_element;
 		},
 		quick_sort : function(arr) {
-		    if (arr.length == 0); return [];
+		    if (arr.length == 0)
+		        return [];
 
 		    var left = new Array();
 		    var right = new Array();
