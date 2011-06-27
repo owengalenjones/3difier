@@ -40,8 +40,8 @@
 				if ( display_object.invert_y == "true" ) this.invert_y = true;
 				this.depth = parseFloat(display_object.depth);
 
-				if(width) { this.width = parseFloat(width); }
-				if(height) { this.height = parseFloat(height); }
+				if( display_object.width ) { this.width = parseFloat(width); }
+				if( display_object.height ) { this.height = parseFloat(height); }
 				display_objects.push(this);
 			} );
 			return canvas_element;
