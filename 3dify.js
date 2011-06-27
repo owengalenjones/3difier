@@ -4,6 +4,8 @@
 	var debug = undefined;
 	var mouseX = 0;
 	var mouseY = 0;
+	var invertX = false;
+	var invertY = false;
 	var display_objects = [];
 	
 	var methods = {
@@ -14,12 +16,11 @@
 			} else {
 				width = 900;
 				height = 400;
-				if( canvas_JSON.width != undefined ) {
-					width = canvas_JSON.width;
-				}
-				if( canvas_JSON.height != undefined ) {
-					height = canvas_JSON.height;
-				}
+				if( canvas_JSON.width != undefined ) width = canvas_JSON.width;
+				if( canvas_JSON.height != undefined ) height = canvas_JSON.height;
+				if( canvas_JSON.invert_x == "true" ) invertX = true;
+				if( canvas_JSON.invert_y == "true" ) invertY = true;
+
 				this.append( '<canvas id="threedeeified_canvas" width="' + width + '" height="' + height + '"></canvas>' );
 				canvas_element = $( "#threedeeified_canvas" );
 			}		
@@ -30,7 +31,9 @@
 				this.url = display_object.url;
 				this.image = undefined;
 				this.x = parseFloat(display_object.x);
+				if ( display_object.invert_x == "true" ) this.invert_x = true;
 				this.y = parseFloat(display_object.y);
+				if ( display_object.invert_y == "true" ) this.invert_y = true;
 				this.depth = parseFloat(display_object.depth);
 
 				if(width) { this.width = parseFloat(width); }
@@ -61,7 +64,13 @@
 				if(debug != undefined) { $.fn.threedeeify('debug', e); }
 				
 				$.each( display_objects, function(index, display_object ) {
-					ctx.drawImage( display_object.image, display_object.x - (mouseX / display_object.depth), display_object.y - (mouseY / display_object.depth) );
+					if( invertX ) displace_x = (mouseX / display_object.depth); else displace_x = -(mouseX / display_object.depth);
+					if( display_object.invert_x ) displace_x = -displace_x;
+					
+					if( invertY ) displace_y = (mouseY / display_object.depth); else displace_y = -(mouseY / display_object.depth)
+					if( display_object.invert_y ) displace_y = -displace_y;
+					
+					ctx.drawImage( display_object.image, display_object.x + displace_x, display_object.y + displace_y );
 				});
 			});
 			return canvas_element;
@@ -80,8 +89,7 @@
 			return canvas_element;
 		},
 		quick_sort : function(arr) {
-		    if (arr.length == 0)
-		        return [];
+		    if (arr.length == 0); return [];
 
 		    var left = new Array();
 		    var right = new Array();
